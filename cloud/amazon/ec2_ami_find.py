@@ -79,6 +79,10 @@ options:
       - Platform type to match.
     default: null
     required: false
+  root_device_type:
+    description: Root device type to match (e.g. ebs).
+    default: null
+    required: false
   sort:
     description:
       - Optional attribute which with to sort the results.
@@ -303,6 +307,7 @@ def main():
             is_public = dict(required=False, type='bool'),
             name = dict(required=False),
             platform = dict(required=False),
+            root_device_type = dict(required=False),
             sort = dict(required=False, default=None,
                 choices=['name', 'description', 'tag', 'architecture', 'block_device_mapping', 'creationDate', 'hypervisor', 'is_public', 'location', 'owner_id', 'platform', 'root_device_name', 'root_device_type', 'state', 'virtualization_type']),
             sort_tag = dict(required=False),
@@ -332,6 +337,7 @@ def main():
     name = module.params.get('name')
     owner = module.params.get('owner')
     platform = module.params.get('platform')
+    root_device_type = module.params.get('root_device_type')
     sort = module.params.get('sort')
     sort_tag = module.params.get('sort_tag')
     sort_order = module.params.get('sort_order')
@@ -358,6 +364,8 @@ def main():
         filter['name'] = name
     if platform:
         filter['platform'] = platform
+    if root_device_type:
+        filter['root_device_type'] = root_device_type
     if virtualization_type:
         filter['virtualization_type'] = virtualization_type
 
